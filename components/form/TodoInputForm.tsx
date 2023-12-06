@@ -29,6 +29,7 @@ export default function TodoInputForm({}) {
   return (
     <div>
       <Input
+        className=""
         {...form.register("task")}
         onKeyDown={(e) => {
           if (e.code == "Enter") {
