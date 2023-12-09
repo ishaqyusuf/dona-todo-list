@@ -15,28 +15,32 @@ datasource db {
 //   email String  @unique
 //   name  String?
 //   // posts Post[]
-//   posts Post[]
+//   // posts Post[]
 // }
 
 model Todos {
   id         Int         @id @default(autoincrement())
   task       String
-  completed  Boolean?
+  completed  Boolean? //true, false
   dueDate    DateTime?
   categoryId Int?
   category   Categories? @relation(fields: [categoryId], references: [id])
   createdAt  DateTime?
   updatedAt  DateTime?
   deletedAt  DateTime?
+  //soft delete:
+  // category   Categories? @relation(fields: [categoriesId], references: [id])
+  // categoriesId Int?
 }
 
 model Categories {
   id        Int       @id @default(autoincrement())
   title     String    @unique
-  todos     Todos[]
+  color     String?
   createdAt DateTime?
   updatedAt DateTime?
   deletedAt DateTime?
+  todos     Todos[]
 }
 
 // model Post {

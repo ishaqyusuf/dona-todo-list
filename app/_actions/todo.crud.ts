@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/db/db";
+import { prisma } from "@/db";
 import { ITodo } from "@/types";
 import { Prisma, Todos } from "@prisma/client";
 import { revalidatePath } from "next/cache";

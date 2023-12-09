@@ -15,6 +15,8 @@ export default function TodoInputForm({}) {
   });
   async function saveTodo() {
     const todo = await _createTodo(form.getValues());
+    form.reset();
+
     //    todo.category
   }
   //   const cateDAte  =form.getValues('user.')

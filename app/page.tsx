@@ -1,4 +1,4 @@
-import { prisma } from "@/db/db";
+import { prisma } from "@/db";
 import { redirect } from "next/navigation";
 // import { _getUsers } from "./_actions/users.crud";
 

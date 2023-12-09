@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/db/db";
+import { prisma } from "@/db";
 
 // export async function _createUser() {}
 // export async function _updateUser() {}
