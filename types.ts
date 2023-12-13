@@ -5,4 +5,7 @@ export interface ITodo extends Todos {
 }
 export interface ICategory extends Categories {
   todos: Todos[];
+  _count: {
+    todos: number;
+  };
 }

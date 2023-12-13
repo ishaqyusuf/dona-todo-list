@@ -3,6 +3,7 @@
 import { prisma } from "@/db";
 import { ITodo } from "@/types";
 import { Prisma, Todos } from "@prisma/client";
+import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 
 export async function _getTodos(categoryName: string) {
@@ -10,18 +11,33 @@ export async function _getTodos(categoryName: string) {
   const where: Prisma.TodosWhereInput = {
     deletedAt: null,
   };
+  console.log(categoryName);
   switch (categoryName) {
-    case "Home":
+    case "home":
       where.OR = [{ completed: false }, { completed: null }];
       //   {
       //     not: true,
       //   };
       break;
-    case "Completed":
+    case "completed":
       where.completed = true;
       break;
-    case "Today":
+    case "today":
+      const gt = dayjs()
+        .subtract(1, "day")
+        .set("hours", 23)
+        .set("minutes", 59)
+        .set("seconds", 59)
+        .toISOString();
+      console.log(gt);
       where.dueDate = {
+        gt,
+        lt: dayjs()
+          // .add(1, "day")
+          .set("hours", 23)
+          .set("minutes", 59)
+          .set("seconds", 59)
+          .toISOString(),
         // gt: (new Date()).
       };
       break;
@@ -29,6 +45,7 @@ export async function _getTodos(categoryName: string) {
       where.category = {
         title: categoryName,
       };
+      where.OR = [{ completed: false }, { completed: null }];
   }
   const todos = await prisma.todos.findMany({
     where,
@@ -47,7 +64,7 @@ export async function _createTodo(todo: ITodo) {
       dueDate: todo.dueDate,
       createdAt: new Date(),
       updatedAt: new Date(),
-
+      // categoryId
       category: todo.category.title
         ? {
             connectOrCreate: {

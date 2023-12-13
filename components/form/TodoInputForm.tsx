@@ -1,10 +1,17 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
-import { useState } from "react";
 import { ITodo } from "@/types";
 import { _createTodo } from "@/app/_actions/todo.crud";
-export default function TodoInputForm({}) {
+import { cn } from "@/lib/utils";
+import { DueDatePicker } from "../date-picker";
+import CategoryPicker from "../category-picker";
+import { Categories } from "@prisma/client";
+export default function TodoInputForm({
+  categories,
+}: {
+  categories: Categories[];
+}) {
   const form = useForm<ITodo>({
     defaultValues: {
       task: "",
@@ -29,9 +36,9 @@ export default function TodoInputForm({}) {
   //   form.getValues('')
   //   let _title = "abc";
   return (
-    <div>
+    <div className={cn("inline-flex")}>
       <Input
-        className=""
+        className="border-none focus:outline-none focus:border-none"
         {...form.register("task")}
         onKeyDown={(e) => {
           if (e.code == "Enter") {
@@ -40,6 +47,8 @@ export default function TodoInputForm({}) {
           }
         }}
       />
+      <DueDatePicker form={form} />
+      <CategoryPicker form={form} categories={categories} />
     </div>
   );
 }

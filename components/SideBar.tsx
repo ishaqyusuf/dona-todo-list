@@ -18,10 +18,12 @@ import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { Categories } from "@prisma/client";
 import { _createCategory } from "@/app/_actions/categories.crud";
+import CategoryIcon from "./category-icon";
+import { ICategory } from "@/types";
 
 interface Props {
   currentCategory: string;
-  categories: Categories[];
+  categories: ICategory[];
 }
 export default function SideBar({ currentCategory, categories }: Props) {
   const defaultCategories = [
@@ -39,11 +41,12 @@ export default function SideBar({ currentCategory, categories }: Props) {
             {...props}
           />
         ))}
-        {categories.map((props, index) => (
+        {categories.map((category, index) => (
           <CategoryNavItem
+            todoCount={category._count.todos}
             currentCategory={currentCategory}
             key={index}
-            {...props}
+            {...(category as any)}
           />
         ))}
         <NewTodoCategoryForm />
@@ -114,11 +117,13 @@ function CategoryNavItem({
   color,
   Icon,
   currentCategory,
+  todoCount,
 }: {
   title: string;
   Icon?: any;
   color?: string;
   currentCategory: string;
+  todoCount?: number;
 }) {
   // _getTodos()
   return (
@@ -133,12 +138,10 @@ function CategoryNavItem({
       <Link href={`/${title}`} className="">
         <div className="flex-1 flex items-center space-x-2">
           {Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
-          {color && (
-            <div
-              className={cn(`w-4 h-4 rounded-md border-2 border-${color}`)}
-            ></div>
-          )}
+          {color && <CategoryIcon color={color} />}
           <p className="font-semibold text-muted-foreground">{title}</p>
+          <div className="flex-1" />
+          <div>{todoCount || 0}</div>
         </div>
       </Link>
     </Button>
